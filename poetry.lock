@@ -1851,6 +1851,20 @@ files = [
 langchain-core = ">=0.2.10,<0.3.0"
 
 [[package]]
+name = "langgraph"
+version = "0.1.17"
+description = "Building stateful, multi-actor applications with LLMs"
+optional = false
+python-versions = "<4.0,>=3.9.0"
+files = [
+    {file = "langgraph-0.1.17-py3-none-any.whl", hash = "sha256:04d69fa2f0d399686f40204995ac53938a0909c3e4d019271872e13de74c9487"},
+    {file = "langgraph-0.1.17.tar.gz", hash = "sha256:eafd3ff322b1813e1d49e9982438638c7e393651a457ce1946783f3fa38aff74"},
+]
+
+[package.dependencies]
+langchain-core = ">=0.2.22,<0.3"
+
+[[package]]
 name = "langsmith"
 version = "0.1.93"
 description = "Client library to connect to the LangSmith LLM Tracing and Evaluation Platform."
@@ -5214,4 +5228,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.13"
-content-hash = "3d354d8aeb5e3fcea259c4d7b26e42ad2626bcc91eeb2c37a91246caacf06c67"
+content-hash = "e220538d78478e8155266e49edbb0293d062f88e15b35c10ecbc78f413307d8c"
