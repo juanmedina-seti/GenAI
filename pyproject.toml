@@ -24,6 +24,8 @@ pypdf = "^4.2.0"
 lark = "^1.1.9"
 azure-search-documents = "^11.4.0"
 azure-identity = "^1.16.1"
+langchain-groq = "^0.1.8"
+numexpr = "^2.10.1"
 
 
 [build-system]
