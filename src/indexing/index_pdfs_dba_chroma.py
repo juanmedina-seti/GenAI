@@ -5,7 +5,7 @@ from icecream import ic
 import pandas as pd
 from langchain.schema.document import Document
 #from get_embedding_function import get_embedding_function
-from get_embedding_function import get_embedding_function_for_chunks
+from src.shared.get_embedding_function import get_embedding_function_for_chunks
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 

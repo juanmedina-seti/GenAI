@@ -60,7 +60,7 @@ def get_excel_data():
 
         # Add the document and metadata to the database
         #not pd.isna(row["Pregunta"]) and 
-        if           len(str(row["Pregunta"]) )> 30:
+        if   len(str(row["Pregunta"]) )> 30:
             documents.append(Document(page_content=str(row["Pregunta"]) +" " + str(row["Detalle"]),
                             metadata={"filename": excel_file_path, "line_number": index,"categoria":row["Categoria"],"tema":row["Tema"],"cliente":row["Cliente"],"fecha":str(row["Fecha"] )}
                            ))

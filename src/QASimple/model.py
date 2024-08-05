@@ -1,9 +1,11 @@
-from langchain import OpenAI, PromptTemplate
-from langchain.chains import LLMChain
+from langchain import  PromptTemplate
+from langchain_google_genai import ChatGoogleGenerativeAI
+
+from dotenv import load_dotenv
+import os
 
 # Configuración del modelo
-openai_api_key = "tu_clave_de_api_aqui"
-llm = OpenAI(api_key=openai_api_key)
+llm = ChatGoogleGenerativeAI(model='gemini-pro',temperature=0)
 
 # Plantillas de prompt
 prompt_template = """
@@ -14,7 +16,7 @@ Respuesta:
 
 # Crear la cadena de LLM
 prompt = PromptTemplate(template=prompt_template, input_variables=["user_input"])
-llm_chain = LLMChain(llm=llm, prompt=prompt)
+llm_chain = prompt | llm
 
 def get_response(user_input):
     response = llm_chain.run({"user_input": user_input})
