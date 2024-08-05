@@ -12,23 +12,28 @@ st.title("Chatbot con LangChain y Streamlit")
 def display_chat(history):
     for entry in history:
         if entry.startswith("Usuario:"):
-            st.text_area("Usuario", value=entry[len("Usuario:"):], height=50, key=entry)
+            with st.chat_message("user",):
+                st.markdown(entry[len("Usuario:"):],)
         elif entry.startswith("Asistente:"):
-            st.text_area("Asistente", value=entry[len("Asistente:"):], height=50, key=entry, disabled=True)
+            with st.chat_message("assistant"):
+                st.markdown(entry[len("Asistente:"):])
+
 
 # Área de entrada de texto
-user_input = st.text_input("Escribe tu mensaje:", "")
 
-if st.button("Enviar"):
-    if user_input:
+display_chat(st.session_state.chat_memory.history)
+
+if prompt := st.chat_input("What is up?"):
+    if prompt:
         # Obtener respuesta del modelo
-        response = get_response(user_input)
+        response = get_response(prompt)
         
         # Mostrar la respuesta
-        st.session_state.chat_memory.add_entry(user_input, response)
-        
+        st.session_state.chat_memory.add_entry(prompt, response)
+        with st.chat_message("user"):
+            st.markdown(prompt)
+        with st.chat_message("assistant"):
+            st.markdown(response)       
         # Limpiar el campo de entrada
-        st.text_input("Escribe tu mensaje:", "", key="new_input")
 
-# Mostrar el historial de conversación
-display_chat(st.session_state.chat_memory.history)
+
