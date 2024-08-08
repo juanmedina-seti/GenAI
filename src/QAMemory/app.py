@@ -1,5 +1,5 @@
 import streamlit as st
-from model import get_response, ChatMemory
+from QAMemory.chain import get_response, ChatMemory
 
 # Inicializar la memoria de chat
 if 'chat_memory' not in st.session_state:

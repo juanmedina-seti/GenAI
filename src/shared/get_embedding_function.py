@@ -1,6 +1,6 @@
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
-from langchain_community.embeddings import HuggingFaceHubEmbeddings
+from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
 #from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 import os
@@ -18,7 +18,7 @@ def get_embedding_function(model="sentence-transformers/all-mpnet-base-v2"):
     # embeddings = HuggingFaceEmbeddings(model=model)
 
     # Hub ejecuta en servidores de hugging face
-    embeddings = HuggingFaceHubEmbeddings(
+    embeddings = HuggingFaceEndpointEmbeddings(
         model=model,
         task="feature-extraction",
 
@@ -37,7 +37,7 @@ def get_embedding_function_for_chunks():
     # HuggingFace
     # embeddings = HuggingFaceEmbeddings( model = model)
 
-    embeddings = HuggingFaceHubEmbeddings(
+    embeddings = HuggingFaceEndpointEmbeddings(
         model=model,
         task="feature-extraction",
 

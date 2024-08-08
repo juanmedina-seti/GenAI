@@ -1,20 +1,18 @@
-import argparse
-import shutil
-from langchain_community.vectorstores import Chroma
-from icecream import ic
-import pandas as pd
+
+from langchain_chroma import Chroma
 from langchain.schema.document import Document
-#from get_embedding_function import get_embedding_function
-from src.shared.get_embedding_function import get_embedding_function_for_chunks
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+import argparse
+import shutil
 
 from dotenv import load_dotenv
 import os
-
+print(os.getcwd())
 load_dotenv()  # Load the .env file
 
+from src.shared.get_embedding_function import get_embedding_function
 chroma_path = os.environ.get("VECTORDB_DBA")
 dba_pdfs_path = os.environ.get("DBA_PDF_PATH")
 
@@ -64,7 +62,7 @@ def split_documents(documents: list[Document]):
 def add_to_chroma(chunks: list[Document]):
     # Load the existing database.
     db = Chroma(
-        persist_directory=chroma_path, embedding_function=get_embedding_function_for_chunks()
+        persist_directory=chroma_path, embedding_function=get_embedding_function()
     )
 
     # Calculate Page IDs.

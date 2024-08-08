@@ -1,5 +1,5 @@
 import streamlit as st
-from model import get_response
+from QASimple.chain import get_response
 
 # Configuración de la aplicación
 st.title("Chatbot con LangChain y Streamlit")
