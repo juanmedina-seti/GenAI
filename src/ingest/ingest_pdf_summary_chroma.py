@@ -1,5 +1,6 @@
 import argparse
 import shutil
+import time
 from langchain_community.vectorstores import Chroma
 from langchain.schema.document import Document
 #from get_embedding_function import get_embedding_function
@@ -7,7 +8,12 @@ from src.shared.get_embedding_function import get_embedding_function
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_community.document_loaders import PyPDFLoader
 
-#from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import TokenTextSplitter
+from langchain.text_splitter import CharacterTextSplitter
+
+#from mistral_common.tokens.tokenizers.mistral import MistralTokenizer
+
+
 
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
@@ -58,18 +64,23 @@ def load_documents():
         pages= document_loader.load()
         summary= summarize_documents(pages)
         summaries.append(summary)
+       # time.sleep(60)
     
     return summaries
 
 
 def summarize_documents(pages: list[Document]):
 
-    #text = [p.page_content for p in pages]
-    #text= str.join(text,"/n")
-    text= format_docs(pages[0:19])
-    print(f"text length = {len(text)}")
 
-    summary = chain_summary.invoke ({"doc":text})
+    text= format_docs(pages)
+    print(f"text length = {len(text)}")
+    text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
+        encoding_name="cl100k_base", chunk_size=5000, chunk_overlap=0)
+   
+    chunks =  text_splitter.split_text(text)
+    print(f"chunks length = {len(chunks[0])}")
+
+    summary = chain_summary.invoke ({"doc":chunks[0]})
     print(summary)
     document=Document(page_content = summary.content,metadata=pages[0].metadata)
 
