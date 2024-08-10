@@ -15,7 +15,7 @@ from map_reduce import MapReduce
 from cluster_summarization import ClusterBasedSummary
 
 # Load the .env file where the openAI token is set
-env_found = load_dotenv("/workspace/.env")
+env_found = load_dotenv()
 if not env_found:
     print("[WARN] The .env file is not found. Please ensure `OPENAI_API_KEY` environment variable is set properly!")
 
@@ -93,7 +93,7 @@ def main():
         print("[INFO] The type of summary is for short-formed text.")
         chain_of_density_summarizer = COD(config_dict)
         result_dict = chain_of_density_summarizer(text_content)
-    elif total_tokens <= config_dict["summary_type_token_limit"]["medium"]:
+    elif total_tokens <= config_dict["summary_type_token_.limit"]["medium"]:
         print("[INFO] The type of summary is for medium sized text.")
         map_reduce_summarizer = MapReduce(config_dict)
         result_dict = map_reduce_summarizer(text_content)

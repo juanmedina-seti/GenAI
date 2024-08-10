@@ -18,7 +18,7 @@ class SentencizerSplitter(object):
         self.nlp.add_pipe("sentencizer")
         self.encoding = tiktoken.encoding_for_model(config_dict["embedding"]["model_name"])
         
-    def create_documents(self, content):
+    def create_documentsold(self, content):
         nlp_sentences = list()
         nlp_sentences_docs = list()
         token_sum = 0

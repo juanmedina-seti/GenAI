@@ -9,6 +9,9 @@ __pycache__/
 #Chroma
 ChromaDB
 
+#DATA
+data
+
 # Distribution / packaging
 .Python
 build/

@@ -1,8 +1,9 @@
 import argparse
 import shutil
 import time
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain.schema.document import Document
+import tiktoken.load
 #from get_embedding_function import get_embedding_function
 from src.shared.get_embedding_function import get_embedding_function
 from langchain_community.document_loaders import PyPDFDirectoryLoader
@@ -28,8 +29,8 @@ import glob
 
 load_dotenv()  # Load the .env file
 
-chroma_path = os.environ.get("VECTORDB_DBA")
-dba_pdfs_path = os.environ.get("DBA_PDF_PATH")
+chroma_path = os.environ.get("VECTORDB_KB")
+dba_pdfs_path = os.environ.get("KB_PDF_PATH")
 
 def format_docs(pages: list[Document]):
     return "\n\n".join(doc.page_content for doc in pages)
@@ -37,10 +38,22 @@ def format_docs(pages: list[Document]):
 
 
 # Configuración del modelo
-llm = ChatGroq(model="mixtral-8x7b-32768")
-prompt = PromptTemplate.from_template("resume el siguiente documento teniendo en cuenta su objetivo, motor de base de datos utilizado: {doc}")
+#llm = ChatGroq(model="mixtral-8x7b-32768")
+llm = ChatGroq(model="llama3-8b-8192")
+prompt = PromptTemplate.from_template("resume el siguiente documento en español teniendo en cuenta su objetivo, motor de base de datos utilizado: {doc}")
 #chain_summary =   { "doc":format_docs }    |prompt | llm 
 chain_summary =  prompt | llm 
+
+import tiktoken
+ 
+encoding_name = "cl100k_base"  # or "p50k_base" or "r50k_base"
+encoding = tiktoken.get_encoding(encoding_name)
+
+
+
+text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
+        encoding_name=encoding_name, chunk_size=8000, chunk_overlap=0)
+
 
 def main():
 
@@ -73,15 +86,21 @@ def summarize_documents(pages: list[Document]):
 
 
     text= format_docs(pages)
+    print(pages[0].metadata["source"])
     print(f"text length = {len(text)}")
-    text_splitter = CharacterTextSplitter.from_tiktoken_encoder(
-        encoding_name="cl100k_base", chunk_size=5000, chunk_overlap=0)
-   
+    tokens = encoding.encode(text)
+    print(f"text tokens = {len(tokens)}")
+
+    
     chunks =  text_splitter.split_text(text)
     print(f"chunks length = {len(chunks[0])}")
+    tokens = encoding.encode(chunks[0])
+    print(f"chynks tokens = {len(tokens)}")
+
+
 
     summary = chain_summary.invoke ({"doc":chunks[0]})
-    print(summary)
+    print(f"summary lenght = {len(summary.content)}")
     document=Document(page_content = summary.content,metadata=pages[0].metadata)
 
                 

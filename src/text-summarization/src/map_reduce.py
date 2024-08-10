@@ -5,12 +5,10 @@ import json
 import traceback
 
 # Python installed module
-import openai
 import tiktoken
 import langchain
 from langchain.chains.llm import LLMChain
-from langchain.chat_models import ChatOpenAI
-from langchain.chat_models import ChatOpenAI
+from langchain_groq import ChatGroq
 from langchain.chains import SequentialChain
 from langchain.prompts import PromptTemplate
 from langchain.embeddings import OpenAIEmbeddings
@@ -31,14 +29,14 @@ class MapReduce(object):
     '''This class implements the Map Reduce summarization'''
     
     def __init__(self, config_dict):
-        self.chat_4_llm = ChatOpenAI(model=config_dict["cod"]["model_name"],
+        self.chat_4_llm = ChatGroq(model=config_dict["cod"]["model_name"],
                                    temperature=config_dict["cod"]["temperature"],
                                    max_tokens=config_dict["cod"]["max_tokens"],
                                    model_kwargs={"top_p": config_dict["cod"]["top_p"],
                                                  "presence_penalty": config_dict["cod"]["presence_penalty"],
                                                  "frequency_penalty": config_dict["cod"]["frequency_penalty"]})
         
-        self.chat_turbo_llm = ChatOpenAI(model=config_dict["kw_extract"]["model_name"],
+        self.chat_turbo_llm = ChatGroq(model=config_dict["kw_extract"]["model_name"],
                                    temperature=config_dict["kw_extract"]["temperature"],
                                    max_tokens=config_dict["kw_extract"]["max_tokens"],
                                    model_kwargs={"top_p": config_dict["kw_extract"]["top_p"],
@@ -84,20 +82,19 @@ class MapReduce(object):
             print("[INFO] Text chunking done!")
             print("[INFO] Map chain for extractive summarization started...")
             
-            with get_openai_callback() as openai_cb:
-                for idx, doc in enumerate(document_splits, start=1):
+            for idx, doc in enumerate(document_splits, start=1):
                     print("[INFO] Map chain extractive summarization for chunk: {}/{}".format(idx, total_splits))
                     extractive_summary_result = self.extractive_summary_chain({"text_chunk": doc.page_content})
                     summaries_list.append(extractive_summary_result["summary"])
-                print("[INFO] Map chain for extractive summarization done!")
-                print("[INFO] Reduce chain for summarization started...")
-                final_summary = self.reduce_documents_chain.run([langchain.schema.document.Document(page_content=chunk) for chunk in summaries_list])
-                print("[INFO] Reduce chain for summarization done!")
-                print("[INFO] Keywords extraction from final summary started...")
-                kw_extract_messages = [HumanMessage(content=prompts.KW_EXTRACT_SYSTEM_PROMPT.format(text_chunk=final_summary))]
-                kw_response = self.chat_turbo_llm(kw_extract_messages)
-                kw_output = kw_response.content.split(", ")
-                print("[INFO] Keywords extraction from final summary done!")
+            print("[INFO] Map chain for extractive summarization done!")
+            print("[INFO] Reduce chain for summarization started...")
+            final_summary = self.reduce_documents_chain.run([langchain.schema.document.Document(page_content=chunk) for chunk in summaries_list])
+            print("[INFO] Reduce chain for summarization done!")
+            print("[INFO] Keywords extraction from final summary started...")
+            kw_extract_messages = [HumanMessage(content=prompts.KW_EXTRACT_SYSTEM_PROMPT.format(text_chunk=final_summary))]
+            kw_response = self.chat_turbo_llm(kw_extract_messages)
+            kw_output = kw_response.content.split(", ")
+            print("[INFO] Keywords extraction from final summary done!")
             
             if (redirect == "cluster_summary") and (self.config_dict["cluster_summarization"]["final_dense"] == True):
                 do_cod = True
@@ -114,17 +111,13 @@ class MapReduce(object):
                 print("[INFO] The Map Reduce summarization started!")
                 return {"summary": cod_result_dict["summary"],
                         "keywords": cod_result_dict["keywords"],
-                        "metadata": {"total_tokens": openai_cb.total_tokens + cod_result_dict["metadata"]["total_tokens"],
-                                     "total_cost": round(openai_cb.total_cost, 3) + cod_result_dict["metadata"]["total_cost"],
-                                     "total_time": round((end_time-start_time), 2)}}
+                        "metadata": {"total_time": round((end_time-start_time), 2)}}
             
             end_time = time.time()
             print("[INFO] The Map Reduce summarization done!")
             return {"summary": final_summary,
                     "keywords": kw_output,
-                    "metadata": {"total_tokens": openai_cb.total_tokens,
-                                 "total_cost": round(openai_cb.total_cost, 3),
-                                 "total_time": round((end_time-start_time), 2)}}
+                    "metadata": {"total_time": round((end_time-start_time), 2)}}
         except Exception as error:
             print("[ERROR] Some error happend in Map Reduce. Error:\n\n{}\n\n".format(error))
             traceback.print_exception(type(error), error, error.__traceback__)

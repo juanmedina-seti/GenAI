@@ -1,5 +1,5 @@
 import streamlit as st
-from QAMemoryV2.chain import get_response, get_history
+from chain import get_response, get_history
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.messages import AIMessage
 

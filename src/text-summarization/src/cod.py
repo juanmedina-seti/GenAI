@@ -5,10 +5,8 @@ import json
 import traceback
 
 # Python installed module
-import openai
 import tiktoken
-from langchain.chat_models import ChatOpenAI
-from langchain.callbacks import get_openai_callback
+from langchain_groq import ChatGroq
 from langchain.schema import AIMessage, HumanMessage, SystemMessage
 
 # Python user defined module
@@ -19,14 +17,14 @@ class COD(object):
     '''This class implements the Chain-Of-Density summarization'''
     
     def __init__(self, config_dict):
-        self.chat_4_llm = ChatOpenAI(model=config_dict["cod"]["model_name"],
+        self.chat_4_llm = ChatGroq(model=config_dict["cod"]["model_name"],
                                    temperature=config_dict["cod"]["temperature"],
                                    max_tokens=config_dict["cod"]["max_tokens"],
                                    model_kwargs={"top_p": config_dict["cod"]["top_p"],
                                                  "presence_penalty": config_dict["cod"]["presence_penalty"],
                                                  "frequency_penalty": config_dict["cod"]["frequency_penalty"]})
         
-        self.chat_turbo_llm = ChatOpenAI(model=config_dict["kw_extract"]["model_name"],
+        self.chat_turbo_llm = ChatGroq(model=config_dict["kw_extract"]["model_name"],
                                    temperature=config_dict["kw_extract"]["temperature"],
                                    max_tokens=config_dict["kw_extract"]["max_tokens"],
                                    model_kwargs={"top_p": config_dict["kw_extract"]["top_p"],
@@ -46,9 +44,8 @@ class COD(object):
                                 HumanMessage(content="Here is the input text for you to summarize using the 'Missing_Entities' and 'Denser_Summary' approach:\n\n{}".format(text_content))
                            ]
             
-            with get_openai_callback() as openai_cb:
-                kw_response = self.chat_turbo_llm(kw_extract_messages)
-                cod_response = self.chat_4_llm(cod_messages)
+            kw_response = self.chat_turbo_llm(kw_extract_messages)
+            cod_response = self.chat_4_llm(cod_messages)
             
             kw_output = kw_response.content.split(", ")
             output = cod_response.content
@@ -60,8 +57,7 @@ class COD(object):
                 end_time = time.time()
                 return {"summary": summary,
                         "keywords": kw_output,
-                        "metadata": {"total_tokens": openai_cb.total_tokens,
-                                     "total_cost": round(openai_cb.total_cost, 3),
+                        "metadata": {
                                      "total_time": round((end_time-start_time), 2)}}
             except json.JSONDecodeError:
                 print("[ERROR] The output JSON is not valid of the COD prompt response. LLM Output:\n\n{}\n\n".format(output))
