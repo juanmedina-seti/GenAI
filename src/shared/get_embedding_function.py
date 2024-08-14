@@ -1,8 +1,13 @@
 from langchain_community.embeddings.ollama import OllamaEmbeddings
-from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
+from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
-#from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
 
+
+    # Los embeddings que no hacen parte de langchain.community (deplicate)
+    # o en librería Lanchain_* creada por el fabricante 
+    # implementan la interfaz que necesita langchain 
+    
 import os
 
 
@@ -23,9 +28,8 @@ def get_embedding_function(model="sentence-transformers/all-mpnet-base-v2"):
         task="feature-extraction",
 
     )
-    # Los embeddings que no hacen parte de langchain.community no
-    # implementant la interfaz que necesita langchain 
-    # embeddings= GoogleGenerativeAIEmbeddings(model="models/embedding-001",api_key=google_api_key)
+
+    # embeddings= GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
     return embeddings
 

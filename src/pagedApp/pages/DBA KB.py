@@ -11,7 +11,7 @@ import os
 
 load_dotenv()  # Load the .env file
 
-chroma_path = os.environ.get("VECTORDB_DBA")
+chroma_path = os.environ.get("VECTORDB_KB")
 PROMPT_TEMPLATE = """
 Eres un analista administrador de bases de datos con experiencia de 10 año,
 tienes alto conocimiento en aseguramiento de motores de bases de datos, basado en
