@@ -1,4 +1,4 @@
-import streamlit as st
+#import streamlit as st
 from langchain_chroma import Chroma
 from langchain.prompts import ChatPromptTemplate
 
@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()  # Load the .env file
-os.environ["PYTHONPATH"]
-os.curdir
+print(os.environ["PYTHONPATH"])
+print(os.getcwd())
 from src.shared.get_embedding_function import get_embedding_function
 
 chroma_path = os.environ.get("VECTORDB_KB")
@@ -36,7 +36,7 @@ metadata_field_info = [
 llm = ChatGoogleGenerativeAI(model="gemini-pro",temperature=0)
 model = llm
     
-embedding_function = get_embedding_function()
+"""embedding_function = get_embedding_function()
 db = Chroma(persist_directory=chroma_path, embedding_function=embedding_function)
 
 st.title("DBA Knowledge Base")
@@ -53,3 +53,4 @@ if(st.button("Enviar")):
             st.write(doc.page_content)
             st.write(f'{doc.metadata["source"]}')
 
+"""
