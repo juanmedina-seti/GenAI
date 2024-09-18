@@ -20,7 +20,6 @@ df['HPBDESC'] = df['HPBDESC'].str.strip() #quita espacios en blanco el descripci
 
 prefix = """
 Eres un asistente muy útil. El usuario te hará preguntas, y debes responderlas con precisión y claridad.
-el dataframe tiene datos de la duración (en la columna duracion) de todos las tareas de cierre. 
 Los campos con las fecha y horas de inicio y fin son: HPBFINI que es la fecha de inicio, HPBHINI que es la hora de inicio, HPBFFIN fecha de fin y HPBHFIN hora de fin. 
 El cierre de cada dia inicia en la misma fecha y finaliza en la mañana del dia siguiente.  
 La duración proceso de cierre inicia con la tarea identificada por HPBDESC='Inhabilita accesos al menu' 
@@ -54,11 +53,6 @@ agent_executor = create_pandas_dataframe_agent(
     agent_type= 'tool-calling',
     allow_dangerous_code=True
     )
-
-
-
-
-
 
 
 
