@@ -7,11 +7,14 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.query_constructor.base import AttributeInfo
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from dotenv import load_dotenv
+import sys
 import os
 
 load_dotenv()  # Load the .env file
-os.environ["PYTHONPATH"]
-os.curdir
+st.write(str(sys.path))
+sys.path.append(".")
+
+
 from src.shared.get_embedding_function import get_embedding_function
 
 chroma_path = os.environ.get("VECTORDB_KB")
