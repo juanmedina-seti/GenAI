@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain.prompts import ChatPromptTemplate
 from src.shared.get_embedding_function import get_embedding_function
 from langchain_core.prompts import PromptTemplate
@@ -51,7 +51,6 @@ if(st.button("Enviar pregunta")):
         context_text = "\n\n---\n\n".join([doc.page_content for doc in results])
 
         sources = "\n\n---\n\n".join([f"{doc.metadata['source']}" for doc in results])
-        st.header("Preguntas similares") 
         for  doc in results:
             st.write(doc.page_content)
             st.write(f'{doc.metadata["motor"]}:{doc.metadata["source"]}')
