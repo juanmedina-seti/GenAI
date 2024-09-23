@@ -11,7 +11,6 @@ import sys
 import os
 
 load_dotenv()  # Load the .env file
-st.write(str(sys.path))
 sys.path.append(".")
 
 
@@ -46,12 +45,12 @@ st.title("DBA Knowledge Base")
 
 query_text = st.text_area("Ingrese la consulta ")
 if(st.button("Enviar")):
-        db.get()
         results = db.similarity_search(query_text, k=2)
         #results = retriever.invoke(query_text)
         
 
         st.header("Documentos relacionados") 
+        
         for  doc in results:
             st.write(doc.page_content)
             st.write(f'{doc.metadata["source"]}')

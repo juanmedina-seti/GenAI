@@ -1,7 +1,7 @@
 import streamlit as st
 #from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
-from src.shared.get_embedding_function import get_embedding_function
+
 from langchain_core.prompts import PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 
@@ -10,9 +10,13 @@ from langchain_community.vectorstores.azuresearch import AzureSearch
 
 from dotenv import load_dotenv
 import os
+import sys
 
 load_dotenv()  # Load the .env file
 
+sys.path.append(".")
+
+from src.shared.get_embedding_function import get_embedding_function
 #chroma_path = os.environ.get("CHROMA_PATH")
 
 vector_store_address = os.environ.get("AZURE_SEARCH_SERVICE")

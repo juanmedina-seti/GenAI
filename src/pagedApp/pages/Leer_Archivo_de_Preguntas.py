@@ -9,7 +9,7 @@ import streamlit as st
 import pandas as pd
 from openpyxl import load_workbook
 from dotenv import load_dotenv
-from src.consulta.utils.answer_security_questions import previous_answers, new_answer
+from src.pagedApp.utils.answer_security_questions import previous_answers, new_answer
 import os
 load_dotenv()  # Load the .env file
 temp_dir = os.environ.get("TEMP_DIR")

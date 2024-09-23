@@ -8,7 +8,8 @@ from langchain.chains.query_constructor.base import AttributeInfo
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from dotenv import load_dotenv
 import os
-
+import sys
+sys.path.append(".")
 load_dotenv()  # Load the .env file
 
 chroma_path = os.environ.get("VECTORDB_DBA")

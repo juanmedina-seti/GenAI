@@ -1,15 +1,18 @@
 import streamlit as st
 from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
-from src.shared.get_embedding_function import get_embedding_function
+
 from langchain_core.prompts import PromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 from dotenv import load_dotenv
 import os
-
+import sys
+sys.path.append(".")
 load_dotenv()  # Load the .env file
 
+
+from src.shared.get_embedding_function import get_embedding_function
 chroma_path = os.environ.get("CHROMA_PATH")
 PROMPT_TEMPLATE = """
 Eres un analista de seguridad de la compañía llamada SETI, debes responder unas 
