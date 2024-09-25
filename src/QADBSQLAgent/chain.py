@@ -68,8 +68,17 @@ agent_executor = create_react_agent(
 
 
 def get_response(user_input):
-    response = agent_executor.invoke({"input":user_input})
-    return response.output
+    inputs = {"messages": [("user", user_input)]}
+    response = agent_executor.stream(inputs)
+    for s in response:
+        for key in s.keys():
+            message=s[key]['messages'][-1]
+    
+    if isinstance(message,tuple):
+        return(message[1])
+    else:
+        return message.content
+           
 
 def main():
     user_input = ""

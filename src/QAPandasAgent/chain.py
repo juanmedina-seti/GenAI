@@ -13,7 +13,7 @@ load_dotenv()
 
 
 #dataframe
-df = pd.read_csv("data/csv/cierre.csv",delimiter=";")
+df = pd.read_csv("data/csv/cierre.csv",delimiter=";",date_format='d/MM/YYYY',parse_dates=['HPBFBT',])
 
 df['HPBPROC'] = df['HPBPROC'].str.strip() #quita espacios en blanco el nombre de proceso
 df['HPBDESC'] = df['HPBDESC'].str.strip() #quita espacios en blanco el descripción de proceso
