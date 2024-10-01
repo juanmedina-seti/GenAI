@@ -1,7 +1,6 @@
 from langchain_core.prompts import  ChatPromptTemplate
 from langchain_groq import ChatGroq
 
-import sqlite3
 from sqlalchemy import create_engine
 from sqlalchemy import text
 
@@ -11,6 +10,11 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 
 from dotenv import load_dotenv
 
+import sys
+
+load_dotenv()
+
+sys.path.append(".")
 
 # Configuración del modelo
 llm = ChatGroq(model="mixtral-8x7b-32768")
@@ -43,6 +47,7 @@ prompt = ChatPromptTemplate.from_messages(
         (
             "system",
             """Eres un asistente muy útil. Por favor entraga solamente la respuesta a la pregunta de manera concreta.
+               La respuesta es para altos ejecutivos que no concen el modelo de datos, 
                Aquí tienes la información sobre los procesos de cierre con los siguientes datos 
                FECHA_CIERRE: fecha del cierre
                DURACION_TOTAL: duración de todo el proceso de cierre de cada fecha
@@ -50,7 +55,8 @@ prompt = ChatPromptTemplate.from_messages(
                INICIO_CIERRE: Fecha y hora de inicio del cierre
                FIN_CIERRE: Fecha y hora de fin de todo del cierre
                HORA_HABILITAR_MENU: Fecha y hora en que finalizó la tarea de habilitar menú lo que permite abrir oficinas
-            """+ context,
+            
+            """+ context + " no utilices los nombres de los campos en la respuesta, utiliza un lenguaje para ejecutivo",
         ),
         ("placeholder", "{chat_history}"),
         ("human", "{input}"),

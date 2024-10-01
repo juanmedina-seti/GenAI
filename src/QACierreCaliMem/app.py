@@ -1,9 +1,15 @@
 import streamlit as st
-from chain import get_response, get_history
+
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.messages import AIMessage
+from dotenv import load_dotenv
 
- 
+import sys
+
+load_dotenv()
+
+sys.path.append(".")
+from src.QACierreCaliMem.chain import get_response
 
 # Inicializar la memoria de chat
 if 'chat_memory' not in st.session_state:
@@ -34,12 +40,12 @@ if prompt := st.chat_input("Pregunta"):
         st.session_state.chat_memory.add_user_message(prompt)
         with st.chat_message("user"):
             st.markdown(prompt)
-                
-        response = get_response(prompt)
-        st.session_state.chat_memory.add_ai_message(response)
-        # Mostrar la respuesta
 
         with st.status("Consultando información ..." , expanded=True) as status:
+                
+            response = get_response(prompt)
+            st.session_state.chat_memory.add_ai_message(response)
+        # Mostrar la respuesta
             with st.chat_message("assistant"):
                 st.markdown(response) 
             status.update(label="",state="complete")      
