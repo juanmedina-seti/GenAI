@@ -18,7 +18,6 @@ sys.path.append(".")
 
 # Configuración del modelo
 llm = ChatGroq(model="mixtral-8x7b-32768")
-
 #configurar base de datos
 engine = create_engine("sqlite:///data/sqlite/cierre.db")
 query= """select FECHA_CIERRE, TIME(SUM( DURACION), 'unixepoch') as DURACION_TOTAL_CIERRE,  TIME(SUM(IIF(CODIGO_TAREA=='PAUSA',0,DURACION)),'unixepoch') AS DURACION_CIERRE_SIN_PAUSAS,
