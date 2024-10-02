@@ -31,7 +31,7 @@ La FECHA_CIERRE indica la fecha del día sobre el que se ejecuta el proceso de c
 Cada tarea está identificada por el CODIGO_TAREA y DESCRIPCION_TAREA. 
 Cada tarea tiene INICIO y FIN que contienen la fecha y hora de inicio y fin de la ejecución
 La columna DURACION tiene el total de segundos de ejecución, se puede sumar para saber el tiempo total
-La preguntas de duración respndela en horas, minutos y segundos.
+La preguntas de duración respondela en horas, minutos y segundos.
 El proceso inicia con la tarea identificada por DESCRIPCION_TAREA='Inhabilita accesos al menu', 
 el INICIO de esta tarea es inicio del proceso de cierre.
 El fin del proceso de cierre se da al finalizar la tarea con CODIGO_TAREA=OCIE1000.
