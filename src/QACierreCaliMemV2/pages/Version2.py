@@ -9,7 +9,7 @@ import sys
 load_dotenv()
 
 sys.path.append(".")
-from src.QACierreCaliMemV2.chain import get_response
+from src.QACierreCaliMemV2.agent import get_response
 
 # Inicializar la memoria de chat
 if 'chat_memory' not in st.session_state:
