@@ -79,8 +79,9 @@ def obtener_datos_tareas_mayor_duracion_por_fecha(fecha_cierre:date) ->str:
 #### Configuración del modelo y herramientas
 
 #grop_model = "gemma-7b-it"  -- NO
-grop_model ="mixtral-8x7b-32768"
-#grop_model ="llama3-groq-70b-8192-tool-use-preview"
+#grop_model ="mixtral-8x7b-32768"
+#
+grop_model ="llama3-groq-70b-8192-tool-use-preview"
 
 llm = ChatGroq(model=grop_model, temperature=0,verbose=True)
 
