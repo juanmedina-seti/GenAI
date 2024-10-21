@@ -11,15 +11,12 @@ from sqlalchemy import text
 
 from dotenv import load_dotenv
 import sys
-print(sys.path)
 load_dotenv()
 print("-----loaded---")
 print(sys.path)
-print(sys.path[-3])
 
-sys.path.append("C:\\instantclient_23_5")
-print("-----appended---")
-print(sys.path)
+#sys.path.append("C:\\instantclient_23_5")
+
 #Conexión de base de datos
 #engine = create_engine("sqlite:///data/sqlite/cierre.db")
 
